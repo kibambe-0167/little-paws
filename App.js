@@ -5,22 +5,26 @@
  * @format
  */
 
+import {Provider} from 'react-redux';
 import React from 'react';
 import {NativeBaseProvider, Box} from 'native-base';
 import Routes from './routes/routes';
+import store from './store';
 
 function App() {
   return (
     <NativeBaseProvider>
-      <Box
-        style={{
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Routes />
-      </Box>
+      <Provider store={store} >
+        <Box
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Routes />
+        </Box>
+      </Provider>
     </NativeBaseProvider>
   );
 }
