@@ -7,6 +7,7 @@
 
 import React from 'react';
 import {NativeBaseProvider, Box} from 'native-base';
+import Routes from './routes/routes';
 
 function App() {
   return (
@@ -16,9 +17,9 @@ function App() {
           flex: 1,
           flexDirection: 'column',
           justifyContent: 'center',
-          alignItems:"center"
+          alignItems: 'center',
         }}>
-        Hello world
+        <Routes />
       </Box>
     </NativeBaseProvider>
   );
