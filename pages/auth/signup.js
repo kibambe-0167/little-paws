@@ -1,13 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Button, Input, Text} from 'native-base';
 import {StyleSheet, Dimensions} from 'react-native';
+import {__regxPhone} from '../../services/routines';
+// import PhoneInput from 'react-native-phone-number-input';
+import {sendSmsVerification} from '../../services/twilio';
 
 //
 const _width = Dimensions.get('screen').width;
 const _height = Dimensions.get('screen').height;
 
 const Signup = ({navigation}) => {
+  const [phone, _setPhone] = useState('');
+  // const [formattedValue, setFormattedValue] = useState('');
+  // const phoneInput = useRef(null);
+
+  const _signup = () => {
+    console.log(phone);
+    let isPhone = __regxPhone(phone);
+    _setPhone(phone);
+    console.log(`is phone number real: ${isPhone}`);
+
+    if (isPhone) {
+      sendSmsVerification(phone).then(res => {
+        console.log(`results: ${res}`);
+      });
+    } else {
+      console.log('Phone Number Is Not Valid');
+    }
+  };
+
+  const handleChange = text => {
+    _setPhone(text);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Box style={styles.headerText}>
@@ -18,6 +44,8 @@ const Signup = ({navigation}) => {
 
       <Box style={styles.form}>
         <Input
+          keyboardType="numeric"
+          onChangeText={val => handleChange(val)}
           placeholderTextColor={'#fff'}
           my={4}
           fontSize={19}
@@ -25,7 +53,26 @@ const Signup = ({navigation}) => {
           placeholder="Phone Number *"
         />
 
+        {/* make the form have country code. */}
+        {/* <PhoneInput
+          ref={phoneInput}
+          defaultValue={phone}
+          defaultCode="ZA"
+          layout="second"
+          style={{width: _width}}
+          onChangeText={text => {
+            setPhone(text);
+          }}
+          onChangeFormattedText={text => {
+            setFormattedValue(text);
+          }}
+          countryPickerProps={{withAlphaFilter: true}}
+          withShadow
+          autoFocus
+        /> */}
+
         <Button
+          onPress={() => _signup()}
           backgroundColor={'#fff'}
           alignSelf={'center'}
           w={_width * 0.45}

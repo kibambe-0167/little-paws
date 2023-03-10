@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux';
 import {setPhone} from '../../redux/userSclice';
 import {StyleSheet} from 'react-native';
 import {Dimensions} from 'react-native';
+import {__regxPhone} from '../../services/routines';
 
 //
 const _width = Dimensions.get('screen').width;
@@ -14,19 +15,9 @@ const Login = ({navigation}) => {
   const dispatch = useDispatch();
   const [phone, _setPhone] = useState('');
 
-  function regxPhone(number) {
-    var trimmed = number.replace(/\s/g, '');
-    var regex = /^0(6|7|8){1}[0-9]{8}$/;
-    if (regex.test(trimmed) === true) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   const handleChange = text => {
     _setPhone(text);
-    let isRegEx = regxPhone(text);
+    let isRegEx = __regxPhone(text);
     console.log(isRegEx);
   };
 
