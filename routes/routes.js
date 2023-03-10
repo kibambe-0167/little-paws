@@ -1,16 +1,12 @@
 import React from 'react';
-import {Text} from 'native-base';
+import AppStack from '../stacks/app';
+import AuthStack from '../stacks/auth';
+import {useSelector} from 'react-redux';
+import {selectPhone} from '../redux/userSclice';
 
 const Routes = () => {
-  return (
-    <>
-      {true ? (
-        <Text>App Stack | Little Paws</Text>
-      ) : (
-        <Text>Auth Stack | Little Paws</Text>
-      )}
-    </>
-  );
+  const _user = useSelector(selectPhone);
+  return <>{_user ? <AppStack /> : <AuthStack />}</>;
 };
 
 export default Routes;

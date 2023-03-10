@@ -7,24 +7,19 @@
 
 import {Provider} from 'react-redux';
 import React from 'react';
-import {NativeBaseProvider, Box} from 'native-base';
+import {NativeBaseProvider} from 'native-base';
 import Routes from './routes/routes';
 import store from './store';
+import {NavigationContainer} from '@react-navigation/native';
 
 function App() {
   return (
     <NativeBaseProvider>
-      <Provider store={store} >
-        <Box
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+      <NavigationContainer>
+        <Provider store={store}>
           <Routes />
-        </Box>
-      </Provider>
+        </Provider>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }
