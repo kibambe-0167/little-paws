@@ -1,16 +1,9 @@
 import React from 'react';
-import {Text} from 'native-base';
+import AppStack from '../stacks/app';
+import AuthStack from '../stacks/auth';
 
 const Routes = () => {
-  return (
-    <>
-      {true ? (
-        <Text>App Stack | Little Paws</Text>
-      ) : (
-        <Text>Auth Stack | Little Paws</Text>
-      )}
-    </>
-  );
+  return <>{true ? <AppStack /> : <AuthStack />}</>;
 };
 
 export default Routes;
