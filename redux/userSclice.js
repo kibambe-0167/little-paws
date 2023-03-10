@@ -15,7 +15,7 @@ const userSclice = createSlice({
 });
 
 export const {setPhone} = userSclice.actions;
-export const {selectPhone} = state => state.user.phone;
+export const selectPhone = state => state.user.phone;
 export default userSclice.reducer;
 
 // const initialState = {

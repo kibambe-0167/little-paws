@@ -1,8 +1,8 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Box, Input, Text} from 'native-base';
+import {Box, Button, Input, Text} from 'native-base';
 
-const Signup = () => {
+const Signup = ({navigation}) => {
   return (
     <SafeAreaView>
       <Box>
@@ -11,6 +11,10 @@ const Signup = () => {
 
       <Box>
         <Input placeholder="Phone NUmber *" />
+      </Box>
+
+      <Box>
+        <Button onPress={() => navigation.navigate('login')}>Login</Button>
       </Box>
     </SafeAreaView>
   );
