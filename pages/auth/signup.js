@@ -2,47 +2,58 @@ import React, {useState} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Button, Input, Text} from 'native-base';
-import Twilio from 'twilio-client';
 //
 const _width = Dimensions.get('screen').width;
 const _height = Dimensions.get('screen').height;
 
 const Signup = ({navigation}) => {
-  const [phoneNum, setPhoneNum] = useState('0784530213');
+  const BASE_URL = 'https://verify1-3595-rxwsws.twil.io';
+  const [phoneNum, setPhoneNum] = useState('+270784530213');
   const [otp, setOtp] = useState('');
   const accountSid = 'ACfd3a3db20d4d1215bda3881fa49a0e00';
   const authToken = 'd83b4a275613d06250341b1443e10b44';
-  const twilio = new Twilio(accountSid, authToken);
-  const fromNum = '0784530213';
+  // const twilio = new Twilio(accountSid, authToken);
+  const fromNum = '+270784530213';
 
   const generateOtp = () => {
     const randomOtp = Math.floor(100000 + Math.random() * 900000);
     setOtp(randomOtp.toString());
   };
 
-  // const sendOtp = () => {
-  //   client.messages
-  //     .create({
-  //       body: `Your OTP is ${otp}`,
-  //       from: fromNum, // Your Twilio phone number
-  //       to: phoneNum,
-  //     })
-  //     .then(message => console.log(message.sid))
-  //     .catch(error => console.error(error));
-  // };
+  const sendSmsVerification = async phoneNumber => {
+    try {
+      const data = JSON.stringify({
+        to: phoneNumber,
+        channel: 'sms',
+      });
+
+      const response = await fetch(`${BASE_URL}/start-verify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+
+      const res = await response.json();
+      return res;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
 
   function clicked() {
-    generateOtp();
-    // sendOtp();
+    // generateOtp();
+    sendSmsVerification(fromNum).then(res => {
+      if (res && res.success === true) {
+        console.log('verified', res);
+        navigation.navigate('opt', {phoneNumber: fromNum});
+      } else {
+        console.log(res);
+      }
+    });
   }
-
-  // const verifyOtp = () => {
-  //   if (otp === enteredOtp) {
-  //     console.log('OTP is valid');
-  //   } else {
-  //     console.log('OTP is invalid');
-  //   }
-  // };
 
   return (
     <SafeAreaView style={styles.safeArea}>
