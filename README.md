@@ -1,6 +1,9 @@
 # little-paws
 
 
+# link to add 
+- https://drive.google.com/drive/folders/1ecIV4EYbdHeMAUUcYJs9dtDOQp6cmlNm?usp=share_link
+
 # env
 - i'm using yarn package manager.
 - i used xcode-simulators and macbook env to develop the app.
