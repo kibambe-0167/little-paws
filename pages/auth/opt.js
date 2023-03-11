@@ -7,7 +7,6 @@ import {StyleSheet, Dimensions, Alert} from 'react-native';
 import {checkVerification, sendSmsVerification} from '../../services/twilio';
 // for input like the ones in the screenshot.
 // import OTPInputView from '@twotalltotems/react-native-otp-input';
-
 //
 const _width = Dimensions.get('screen').width;
 const _height = Dimensions.get('screen').height;
@@ -18,6 +17,7 @@ const Opt = ({route, navigation}) => {
   const [code, setCode] = useState(null);
 
   function verify() {
+    setInvalidCode(false);
     checkVerification(phoneNumber, code)
       .then(res => {
         console.log(res);
@@ -25,7 +25,8 @@ const Opt = ({route, navigation}) => {
           navigation.navigate('login');
           Alert.alert('Success', res.message);
         } else {
-          Alert.alert('Failed', 'Verification Failed.');
+          setInvalidCode(true);
+          Alert.alert('Failed', 'Verification Failed.Incorrect Token.');
         }
       })
       .catch(err => {
@@ -37,7 +38,6 @@ const Opt = ({route, navigation}) => {
     sendSmsVerification(phoneNumber).then(res => {
       if (res && res.success === true) {
         console.log('verified', res);
-        navigation.navigate('login', {from: 'fromopt'});
       } else {
         console.log(res);
       }
@@ -90,9 +90,10 @@ const Opt = ({route, navigation}) => {
           _text={{
             fontSize: 20,
             color: '#fff',
+            textDecorationLine: 'underline',
           }}
           variant={'link'}>
-          Cancel
+          Cancel or Change Phone Number
         </Button>
       </Box>
 
@@ -109,7 +110,7 @@ const Opt = ({route, navigation}) => {
           });
         }}
       /> */}
-      {invalidCode && <Text style={styles.error}>Incorrect code.</Text>}
+      {invalidCode && <Text style={styles.error}>Incorrect Opt Code.</Text>}
     </SafeAreaView>
   );
 };
@@ -149,6 +150,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 30,
     paddingVertical: 5,
+  },
+  error: {
+    color: '#f00',
+    textAlign: 'center',
+    fontSize: 20,
+    paddingTop: 30,
   },
 });
 
