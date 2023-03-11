@@ -17,7 +17,8 @@ const Opt = ({route, navigation}) => {
 
   function verify() {
     setInvalidCode(false);
-    checkVerification(phoneNumber, code)
+    let num = '+27' + phoneNumber;
+    checkVerification(num, code)
       .then(res => {
         console.log(res);
         if (res && res.success === true) {
