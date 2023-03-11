@@ -35,7 +35,8 @@ const Opt = ({route, navigation}) => {
   }
 
   function getNewOpt() {
-    sendSmsVerification(phoneNumber).then(res => {
+    let num = '+27' + phoneNumber;
+    sendSmsVerification(num).then(res => {
       if (res && res.success === true) {
         console.log('verified', res);
       } else {
