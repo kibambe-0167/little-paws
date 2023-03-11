@@ -4,23 +4,32 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Button, Input, Text} from 'native-base';
 // import PhoneInput from 'react-native-phone-number-input';
 import {sendSmsVerification} from '../../services/twilio';
+import {regxPhone} from '../../services/routines';
+import {Alert} from 'react-native';
 //
 const _width = Dimensions.get('screen').width;
 const _height = Dimensions.get('screen').height;
 
 const Signup = ({navigation}) => {
-  const [phoneNum, setPhoneNum] = useState('+270784530213');
+  const [phoneNum, setPhoneNum] = useState('');
   const fromNum = '+270784530213';
 
   function clicked() {
-    sendSmsVerification(fromNum).then(res => {
-      if (res && res.success === true) {
-        console.log('verified', res);
-        navigation.navigate('opt', {phoneNumber: fromNum});
-      } else {
-        console.log(res);
-      }
-    });
+    let isTrue = regxPhone(phoneNum);
+    if (phoneNum && isTrue) {
+      let num = '+27' + phoneNum;
+      console.log(num);
+      sendSmsVerification(num).then(res => {
+        if (res && res.success === true) {
+          console.log('verified', res);
+          navigation.navigate('opt', {phoneNumber: fromNum});
+        } else {
+          console.log(res);
+        }
+      });
+    } else {
+      Alert.alert('Message', 'Invalid South African Number');
+    }
   }
 
   return (

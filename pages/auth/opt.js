@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Input, Text, Button} from 'native-base';
 // import {useDispatch} from 'react-redux';
-import {Link} from '@react-navigation/native';
 import {StyleSheet, Dimensions, Alert} from 'react-native';
 import {checkVerification, sendSmsVerification} from '../../services/twilio';
 // for input like the ones in the screenshot.
