@@ -1,13 +1,37 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {StyleSheet, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Button, Input, Text} from 'native-base';
-import {StyleSheet, Dimensions} from 'react-native';
-
+// import PhoneInput from 'react-native-phone-number-input';
+import {sendSmsVerification} from '../../services/twilio';
+import {regxPhone} from '../../services/routines';
+import {Alert} from 'react-native';
 //
 const _width = Dimensions.get('screen').width;
 const _height = Dimensions.get('screen').height;
 
 const Signup = ({navigation}) => {
+  const [phoneNum, setPhoneNum] = useState('');
+  const fromNum = '+270784530213';
+
+  function clicked() {
+    let isTrue = regxPhone(phoneNum);
+    if (phoneNum && isTrue) {
+      let num = '+27' + phoneNum;
+      console.log(num);
+      sendSmsVerification(num).then(res => {
+        if (res && res.success === true) {
+          console.log('verified', res);
+          navigation.navigate('opt', {phoneNumber: fromNum});
+        } else {
+          console.log(res);
+        }
+      });
+    } else {
+      Alert.alert('Message', 'Invalid South African Number');
+    }
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Box style={styles.headerText}>
@@ -18,6 +42,8 @@ const Signup = ({navigation}) => {
 
       <Box style={styles.form}>
         <Input
+          value={phoneNum}
+          onChangeText={text => setPhoneNum(text)}
           placeholderTextColor={'#fff'}
           my={4}
           fontSize={19}
@@ -25,7 +51,25 @@ const Signup = ({navigation}) => {
           placeholder="Phone Number *"
         />
 
+        {/* do more research on this. to allow countries selection. */}
+        {/* <PhoneInput
+          ref={phoneInput}
+          defaultValue={value}
+          defaultCode="US"
+          layout="first"
+          onChangeText={text => {
+            setValue(text);
+          }}
+          onChangeFormattedText={text => {
+            setFormattedValue(text);
+          }}
+          countryPickerProps={{withAlphaFilter: true}}
+          withShadow
+          autoFocus
+        /> */}
+
         <Button
+          onPress={() => clicked()}
           backgroundColor={'#fff'}
           alignSelf={'center'}
           w={_width * 0.45}

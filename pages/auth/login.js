@@ -3,7 +3,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Input, Text, Button} from 'native-base';
 import {useDispatch} from 'react-redux';
 import {setPhone} from '../../redux/userSclice';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Alert} from 'react-native';
 import {Dimensions} from 'react-native';
 
 //
@@ -26,12 +26,17 @@ const Login = ({navigation}) => {
 
   const handleChange = text => {
     _setPhone(text);
-    let isRegEx = regxPhone(text);
-    console.log(isRegEx);
+    // let isRegEx = regxPhone(text);
+    // console.log(isRegEx);
   };
 
   const _login = data => {
-    dispatch(setPhone({phone: true}));
+    let isTrue = regxPhone(phone);
+    if (isTrue) {
+      dispatch(setPhone({phone: true}));
+    } else {
+      Alert.alert('Message', 'Invalid Phone Number Format');
+    }
   };
 
   return (
