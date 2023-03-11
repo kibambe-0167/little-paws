@@ -1,13 +1,49 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {StyleSheet, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Button, Input, Text} from 'native-base';
-import {StyleSheet, Dimensions} from 'react-native';
-
+import Twilio from 'twilio-client';
 //
 const _width = Dimensions.get('screen').width;
 const _height = Dimensions.get('screen').height;
 
 const Signup = ({navigation}) => {
+  const [phoneNum, setPhoneNum] = useState('0784530213');
+  const [otp, setOtp] = useState('');
+  const accountSid = 'ACfd3a3db20d4d1215bda3881fa49a0e00';
+  const authToken = 'd83b4a275613d06250341b1443e10b44';
+  const twilio = new Twilio(accountSid, authToken);
+  const fromNum = '0784530213';
+
+  const generateOtp = () => {
+    const randomOtp = Math.floor(100000 + Math.random() * 900000);
+    setOtp(randomOtp.toString());
+  };
+
+  // const sendOtp = () => {
+  //   client.messages
+  //     .create({
+  //       body: `Your OTP is ${otp}`,
+  //       from: fromNum, // Your Twilio phone number
+  //       to: phoneNum,
+  //     })
+  //     .then(message => console.log(message.sid))
+  //     .catch(error => console.error(error));
+  // };
+
+  function clicked() {
+    generateOtp();
+    // sendOtp();
+  }
+
+  // const verifyOtp = () => {
+  //   if (otp === enteredOtp) {
+  //     console.log('OTP is valid');
+  //   } else {
+  //     console.log('OTP is invalid');
+  //   }
+  // };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Box style={styles.headerText}>
@@ -18,6 +54,8 @@ const Signup = ({navigation}) => {
 
       <Box style={styles.form}>
         <Input
+          value={phoneNum}
+          onChangeText={text => setPhoneNum(text)}
           placeholderTextColor={'#fff'}
           my={4}
           fontSize={19}
@@ -26,6 +64,7 @@ const Signup = ({navigation}) => {
         />
 
         <Button
+          onPress={() => clicked()}
           backgroundColor={'#fff'}
           alignSelf={'center'}
           w={_width * 0.45}
@@ -70,3 +109,24 @@ const styles = StyleSheet.create({
 });
 
 export default Signup;
+
+// import Twilio from 'twilio-client';
+
+// // Set up a new Twilio client with your account SID and auth token
+// const twilio = new Twilio(accountSid, authToken);
+
+// // Generate a random verification code
+// const verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+// // Send an SMS message with the verification code
+// twilio.messages.create({
+//   body: `Your verification code is ${verificationCode}`,
+//   from: '+1234567890', // Replace with your Twilio phone number
+//   to: '+15555555555' // Replace with the recipient's phone number
+// })
+// .then(message => {
+//   console.log(`Verification code sent: ${verificationCode}`);
+// })
+// .catch(error => {
+//   console.error(`Error sending verification code: ${error}`);
+// });
