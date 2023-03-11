@@ -20,4 +20,8 @@
 - enter your phone number in the format 0xx xxx xxxx without spaces.
 - the app will add country code.
 - package for dealing with country code, was not working, but code is just commented out.
+
+
+# issues.
+- i was using twilio for server side, which gave me issues as it's required some modules that are not supported in client-side.
 - 
