@@ -8,16 +8,31 @@ const sendSmsVerification = async phoneNumber => {
       channel: 'sms',
     });
 
-    const response = await fetch(`${BASE_URL}/start-verify`, {
+    // const response = await fetch(`${BASE_URL}/start-verify`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: data,
+    // });
+    // const json = await response.json();
+
+    await fetch(`${BASE_URL}/start-verify`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: data,
-    });
+    })
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
-    const json = await response.json();
-    return json.success;
+    return null;
   } catch (error) {
     console.error(error);
     return false;

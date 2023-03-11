@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Button, Input, Text} from 'native-base';
 import {StyleSheet, Dimensions} from 'react-native';
-import {__regxPhone} from '../../services/routines';
+import {getOpt, __regxPhone} from '../../services/routines';
 // import PhoneInput from 'react-native-phone-number-input';
 import {sendSmsVerification} from '../../services/twilio';
+import Twilio from 'react-native-twilio';
 
 //
 const _width = Dimensions.get('screen').width;
@@ -16,12 +17,12 @@ const Signup = ({navigation}) => {
   // const phoneInput = useRef(null);
 
   const _signup = () => {
-    console.log(phone);
     let isPhone = __regxPhone(phone);
     _setPhone(phone);
     console.log(`is phone number real: ${isPhone}`);
 
     if (isPhone) {
+      handleSendMessage();
       sendSmsVerification(phone).then(res => {
         console.log(`results: ${res}`);
       });
@@ -33,6 +34,23 @@ const Signup = ({navigation}) => {
   const handleChange = text => {
     _setPhone(text);
   };
+
+  const handleSendMessage = () => {
+    const opt = getOpt();
+    // Twilio.initWithToken('YOUR_ACCOUNT_SID', 'YOUR_AUTH_TOKEN');
+    Twilio.sendMessage(
+      '0784530213', // toNumber
+      `Hello from Little Paws ${opt}`, // messageBody
+      '0784530213', // fromNumber
+    );
+  };
+
+  useEffect(() => {
+    Twilio.initWithToken(
+      'VA061126adcb2e7c3c6335a2601074210a',
+      'd83b4a275613d06250341b1443e10b44',
+    );
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
