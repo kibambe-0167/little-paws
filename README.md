@@ -10,8 +10,9 @@
 # how to run the project
 - clone from github or download the zip file.
 - cd into the project folder.
-- type yarn in the terminal/cmd to install packages.
-- 
+- type 'yarn' in the terminal/cmd and click enter to install packages.
+- type 'yarn android' to run on android simulator or physical devices connected to laptop via a cable.
+- type 'yarn ios' to run on xcode-simulators.
 
 
 # how to use opt features.
