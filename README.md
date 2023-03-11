@@ -24,4 +24,4 @@
 
 # issues.
 - i was using twilio for server side, which gave me issues as it's required some modules that are not supported in client-side.
-- 
+- the package that display the opt input as in the figma UI was not working, but commented out for further investigation
