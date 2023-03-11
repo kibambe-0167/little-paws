@@ -22,3 +22,26 @@ export const checkVerification = async (phoneNumber, code) => {
     return false;
   }
 };
+
+export const sendSmsVerification = async phoneNumber => {
+  try {
+    const data = JSON.stringify({
+      to: phoneNumber,
+      channel: 'sms',
+    });
+
+    const response = await fetch(`${BASE_URL}/start-verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    });
+
+    const res = await response.json();
+    return res;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};

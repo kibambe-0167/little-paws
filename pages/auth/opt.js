@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Box, Input, Text, Button} from 'native-base';
-import {useDispatch} from 'react-redux';
+// import {useDispatch} from 'react-redux';
+import {Link} from '@react-navigation/native';
 import {StyleSheet, Dimensions, Alert} from 'react-native';
-
-import {checkVerification} from '../../services/twilio';
+import {checkVerification, sendSmsVerification} from '../../services/twilio';
 // for input like the ones in the screenshot.
 // import OTPInputView from '@twotalltotems/react-native-otp-input';
 
@@ -33,24 +33,68 @@ const Opt = ({route, navigation}) => {
       });
   }
 
+  function getNewOpt() {
+    sendSmsVerification(phoneNumber).then(res => {
+      if (res && res.success === true) {
+        console.log('verified', res);
+        navigation.navigate('login', {from: 'fromopt'});
+      } else {
+        console.log(res);
+      }
+    });
+  }
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Text style={styles.prompt}>Enter the code we sent you</Text>
-      <Text style={styles.message}>
-        {`Your phone (${phoneNumber}) will be used to protect your account each time you log in.`}
-      </Text>
+      <Box>
+        <Text style={styles.prompt}>Enter the code we sent you</Text>
+        <Text style={styles.message}>
+          {`An Opt Was Sent To (${phoneNumber}), Please Enter The Opt To Continue.`}
+        </Text>
 
-      <Input
-        my={4}
-        size={'md'}
-        fontSize={20}
-        placeholderTextColor={'#fff'}
-        color="#fff"
-        placeholder="enter code"
-        onChangeText={val => setCode(val)}
-      />
+        <Input
+          my={4}
+          size={'md'}
+          fontSize={20}
+          placeholderTextColor={'#fff'}
+          color="#fff"
+          placeholder="Enter OPT Code"
+          onChangeText={val => setCode(val)}
+        />
 
-      <Button onPress={() => verify()}>Verify</Button>
+        <Button
+          _text={{
+            color: '#7F9A9D',
+            fontSize: 18,
+          }}
+          style={styles.btn}
+          onPress={() => verify()}>
+          Verify
+        </Button>
+      </Box>
+
+      <Box marginTop={10}>
+        <Button
+          _text={{
+            color: '#7F9A9D',
+            fontSize: 18,
+          }}
+          style={styles.btn}
+          onPress={() => getNewOpt()}>
+          Get New Opt
+        </Button>
+      </Box>
+
+      <Box marginTop={_height * 0.05} alignItems={'center'}>
+        <Button
+          onPress={() => navigation.navigate('signup')}
+          _text={{
+            fontSize: 20,
+            color: '#fff',
+          }}
+          variant={'link'}>
+          Cancel
+        </Button>
+      </Box>
 
       {/* <OTPInputView
         style={{width: '80%', height: 200}}
@@ -75,7 +119,20 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     backgroundColor: '#7F9A9D',
-    paddingTop: _width * 0.2,
+    justifyContent: 'center',
+  },
+  prompt: {
+    paddingVertical: 5,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 22,
+    letterSpacing: 0.3,
+    textTransform: 'capitalize',
+  },
+  message: {
+    paddingVertical: 10,
+    color: '#fff',
   },
   headerText: {
     paddingTop: 30,
@@ -87,6 +144,11 @@ const styles = StyleSheet.create({
     height: _height * 0.3,
     flexDirection: 'column',
     justifyContent: 'flex-end',
+  },
+  btn: {
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingVertical: 5,
   },
 });
 

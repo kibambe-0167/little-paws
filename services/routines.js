@@ -7,3 +7,8 @@ export function regxPhone(number) {
     return false;
   }
 }
+
+export const generateOtp = () => {
+  const randomOtp = Math.floor(100000 + Math.random() * 900000);
+  return randomOtp.toString();
+};
