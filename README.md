@@ -1,7 +1,7 @@
 # little-paws
 
 
-# link to add 
+# link to android apk app.
 - https://drive.google.com/drive/folders/1ecIV4EYbdHeMAUUcYJs9dtDOQp6cmlNm?usp=share_link
 
 # env
